@@ -7,19 +7,6 @@ from sqlalchemy.orm import relationship
 from datetime import datetime
 import pytz
 
-'''
-Red underlines? Install the required packages first: 
-Open the Terminal in PyCharm (bottom left). 
-
-On Windows type:
-python -m pip install -r requirements.txt
-
-On MacOS type:
-pip3 install -r requirements.txt
-
-This will install the packages from requirements.txt for this project.
-'''
-
 app = Flask(__name__)
 # Enable CORS for REST API endpoints
 CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -128,7 +115,7 @@ def bad_request(error):
     return jsonify({"error": "Bad request"}), 400
 
 
-@app.route('/interface')
+@app.route('/')
 def home():
     # READ ALL RECORDS
     contacts = db.session.execute(db.select(Contact).order_by(Contact.Name)).scalars().all()
