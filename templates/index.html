@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Manufacturing Management System</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f5f5f5;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      h1 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .section {
+        background: white;
+        margin: 20px 0;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .section h2 {
+        color: #2c3e50;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+      }
+      .add-buttons {
+        text-align: center;
+        margin: 20px 0;
+      }
+      .add-btn {
+        background: #3498db;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        margin: 0 10px;
+        display: inline-block;
+      }
+      .add-btn:hover {
+        background: #2980b9;
+      }
+      .item {
+        background: #f8f9fa;
+        margin: 10px 0;
+        padding: 15px;
+        border-radius: 5px;
+        border-left: 4px solid #3498db;
+      }
+      .delete-btn {
+        background: #e74c3c;
+        color: white;
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 3px;
+        font-size: 12px;
+        float: right;
+        margin-left: 5px;
+        cursor: pointer;
+        border: none;
+      }
+      .delete-btn:hover {
+        background: #c0392b;
+      }
+      .edit-btn {
+        background: #2ecc71;
+        color: white;
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 3px;
+        font-size: 12px;
+        float: right;
+        cursor: pointer;
+        border: none;
+      }
+      .edit-btn:hover {
+        background: #27ae60;
+      }
+      .empty-message {
+        color: #7f8c8d;
+        font-style: italic;
+        text-align: center;
+        padding: 20px;
+      }
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        border-radius: 5px;
+        color: white;
+        font-weight: bold;
+        z-index: 1000;
+        display: none;
+      }
+      .notification.success {
+        background: #2ecc71;
+      }
+      .notification.error {
+        background: #e74c3c;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Manufacturing Management System</h1>
+      
+      <div class="notification" id="notification"></div>
+      
+      <div class="add-buttons">
+        <a href="{{ url_for('add_contact') }}" class="add-btn">Add Contact</a>
+        <a href="{{ url_for('add_wire') }}" class="add-btn">Add Wire</a>
+        <a href="{{ url_for('add_process') }}" class="add-btn">Add Process</a>
+        <a href="{{ url_for('add_recipe') }}" class="add-btn">Add Recipe</a>
+      </div>
+
+      <div class="section">
+        <h2>Contacts</h2>
+        {% if contacts == []: %}
+        <p class="empty-message">No contacts available.</p>
+        {% endif %}
+        {% for contact in contacts %}
+        <div class="item" id="contact-{{ contact.id }}">
+          <button onclick="deleteItem('contact', {{ contact.id }})" class="delete-btn">Delete</button>
+          <a href="{{ url_for('edit_contact', id=contact.id) }}" class="edit-btn">Edit</a>
+          <strong>{{contact.Name}}</strong> - {{contact.Description}}<br>
+          Diameter: {{contact.Diameter}} | Insert Depth: {{contact.Insertdepth}} | ZF Contact Number: {{contact.ZF_ContNumb}}
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="section">
+        <h2>Wires</h2>
+        {% if wires == []: %}
+        <p class="empty-message">No wires available.</p>
+        {% endif %}
+        {% for wire in wires %}
+        <div class="item" id="wire-{{ wire.id }}">
+          <button onclick="deleteItem('wire', {{ wire.id }})" class="delete-btn">Delete</button>
+          <a href="{{ url_for('edit_wire', id=wire.id) }}" class="edit-btn">Edit</a>
+          <strong>{{wire.name}}</strong> - {{wire.description}}<br>
+          Cross Section: {{wire.cross_section}} | Isolation Diameter: {{wire.isolation_diameter}} | Wire Diameter: {{wire.wire_diameter}} | Color: {{wire.color}}
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="section">
+        <h2>Processes</h2>
+        {% if processes == []: %}
+        <p class="empty-message">No processes available.</p>
+        {% endif %}
+        {% for process in processes %}
+        <div class="item" id="process-{{ process.id }}">
+          <button onclick="deleteItem('process', {{ process.id }})" class="delete-btn">Delete</button>
+          <a href="{{ url_for('edit_process', id=process.id) }}" class="edit-btn">Edit</a>
+          <strong>{{process.name}}</strong><br>
+          Crimping Depth: {{process.crimping_depth_d}} | Performance: {{process.sf_performance_d}} | Frequency: {{process.sf_frequence_d}}<br>
+          Stripping Position: {{process.stripping_position}} | Stripping Function: {{process.stripping_function}}
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="section">
+        <h2>Recipes</h2>
+        {% if recipes == []: %}
+        <p class="empty-message">No recipes available.</p>
+        {% endif %}
+        {% for recipe in recipes %}
+        <div class="item" id="recipe-{{ recipe.id }}">
+          <button onclick="deleteItem('recipe', {{ recipe.id }})" class="delete-btn">Delete</button>
+          <a href="{{ url_for('edit_recipe', id=recipe.id) }}" class="edit-btn">Edit</a>
+          <strong>{{recipe.description}}</strong><br>
+          Contact: {{recipe.contact.Name}} | Wire: {{recipe.wire.name}} | Process: {{recipe.process.name}}
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="section">
+        <h2>Jobs</h2>
+        {% if jobs == []: %}
+        <p class="empty-message">No jobs available.</p>
+        {% endif %}
+        {% for job in jobs %}
+        <div class="item" id="job-{{ job.id }}">
+          <button onclick="deleteItem('job', {{ job.id }})" class="delete-btn">Delete</button>
+          <strong>{{job.name}}</strong> - Status: {{job.status}}<br>
+          Created: {{job.created_at}}
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="section">
+        <h2>Setups</h2>
+        {% if setups == []: %}
+        <p class="empty-message">No setups available.</p>
+        {% endif %}
+        {% for setup in setups %}
+        <div class="item" id="setup-{{ setup.id }}">
+          <button onclick="deleteItem('setup', {{ setup.id }})" class="delete-btn">Delete</button>
+          <strong>{{setup.name}}</strong> - {{setup.description}}<br>
+          Status: {{setup.status}}
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="section">
+        <h2>Commands</h2>
+        {% if commands == []: %}
+        <p class="empty-message">No commands available.</p>
+        {% endif %}
+        {% for command in commands %}
+        <div class="item" id="command-{{ command.id }}">
+          <button onclick="deleteItem('command', {{ command.id }})" class="delete-btn">Delete</button>
+          <strong>{{command.name}}</strong> - {{command.description}}<br>
+          Status: {{command.status}}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <script>
+      function deleteItem(type, id) {
+        if (confirm(`Are you sure you want to delete this ${type}?`)) {
+          fetch(`/delete_${type}?id=${id}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          })
+          .then(response => {
+            // Check if response is JSON
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+              return response.json().then(data => {
+                if (response.ok) {
+                  return { success: true, data: data };
+                } else {
+                  return { success: false, error: data.error || 'Delete failed' };
+                }
+              });
+            } else {
+              // Handle non-JSON responses (like 404 pages)
+              if (response.ok) {
+                return { success: true, data: { message: `${type} deleted successfully` } };
+              } else {
+                return { success: false, error: `HTTP ${response.status}: ${response.statusText}` };
+              }
+            }
+          })
+          .then(result => {
+            if (result.success) {
+              // Remove the item from the DOM
+              const element = document.getElementById(`${type}-${id}`);
+              if (element) {
+                element.remove();
+              }
+              
+              // Show success notification
+              showNotification(result.data.message, 'success');
+              
+              // Check if section is empty and show message
+              const section = element ? element.closest('.section') : null;
+              if (section) {
+                const items = section.querySelectorAll('.item');
+                if (items.length === 0) {
+                  const emptyMessage = document.createElement('p');
+                  emptyMessage.className = 'empty-message';
+                  emptyMessage.textContent = `No ${type}s available.`;
+                  section.appendChild(emptyMessage);
+                }
+              }
+            } else {
+              // Show error notification
+              showNotification(result.error, 'error');
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            showNotification('Network error occurred', 'error');
+          });
+        }
+      }
+
+      function showNotification(message, type) {
+        const notification = document.getElementById('notification');
+        notification.textContent = message;
+        notification.className = `notification ${type}`;
+        notification.style.display = 'block';
+        
+        setTimeout(() => {
+          notification.style.display = 'none';
+        }, 3000);
+      }
+    </script>
+  </body>
+</html>

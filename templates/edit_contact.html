@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Edit Contact</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f5f5f5;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      h1 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #2c3e50;
+      }
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+        box-sizing: border-box;
+      }
+      button {
+        background: #3498db;
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100%;
+      }
+      button:hover {
+        background: #2980b9;
+      }
+      .back-link {
+        text-align: center;
+        margin-top: 20px;
+      }
+      .back-link a {
+        color: #3498db;
+        text-decoration: none;
+      }
+      .back-link a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Edit Contact</h1>
+      <form action="{{ url_for('edit_contact') }}" method="POST">
+        <input type="hidden" name="id" value="{{ contact.id }}" />
+        <div class="form-group">
+          <label>Name</label>
+          <input name="name" type="text" value="{{ contact.Name }}" required />
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <input name="description" type="text" value="{{ contact.Description }}" required />
+        </div>
+        <div class="form-group">
+          <label>Diameter</label>
+          <input name="diameter" type="text" value="{{ contact.Diameter }}" required />
+        </div>
+        <div class="form-group">
+          <label>Insert Depth</label>
+          <input name="insertdepth" type="text" value="{{ contact.Insertdepth }}" required />
+        </div>
+        <div class="form-group">
+          <label>ZF Contact Number</label>
+          <input name="zf_contnumb" type="text" value="{{ contact.ZF_ContNumb }}" required />
+        </div>
+        <button type="submit">Update Contact</button>
+      </form>
+      <div class="back-link">
+        <a href="{{ url_for('home') }}">← Back to Home</a>
+      </div>
+    </div>
+  </body>
+</html> 

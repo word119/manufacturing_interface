@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Edit Process</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f5f5f5;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      h1 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #2c3e50;
+      }
+      input[type="text"], select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+        box-sizing: border-box;
+      }
+      button {
+        background: #3498db;
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100%;
+      }
+      button:hover {
+        background: #2980b9;
+      }
+      .back-link {
+        text-align: center;
+        margin-top: 20px;
+      }
+      .back-link a {
+        color: #3498db;
+        text-decoration: none;
+      }
+      .back-link a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Edit Process</h1>
+      <form action="{{ url_for('edit_process') }}" method="POST">
+        <input type="hidden" name="id" value="{{ process.id }}" />
+        <div class="form-group">
+          <label>Name</label>
+          <input name="name" type="text" value="{{ process.name }}" required />
+        </div>
+        <div class="form-group">
+          <label>Crimping Depth (d)</label>
+          <input name="crimping_depth_d" type="text" value="{{ process.crimping_depth_d }}" required />
+        </div>
+        <div class="form-group">
+          <label>Crimping Depth Offset (d)</label>
+          <input name="crimping_depth_offset_d" type="text" value="{{ process.crimping_depth_offset_d }}" required />
+        </div>
+        <div class="form-group">
+          <label>Holding Value Delta (d)</label>
+          <input name="holding_value_delta_d" type="text" value="{{ process.holding_value_delta_d }}" required />
+        </div>
+        <div class="form-group">
+          <label>Insertion Depth Delta (d)</label>
+          <input name="insertion_depth_delta_d" type="text" value="{{ process.insertion_depth_delta_d }}" required />
+        </div>
+        <div class="form-group">
+          <label>SF Performance (d)</label>
+          <input name="sf_performance_d" type="text" value="{{ process.sf_performance_d }}" required />
+        </div>
+        <div class="form-group">
+          <label>SF Frequency (d)</label>
+          <input name="sf_frequence_d" type="text" value="{{ process.sf_frequence_d }}" required />
+        </div>
+        <div class="form-group">
+          <label>Extendable Feeder Tube (s)</label>
+          <select name="extendable_feeder_tuble_s" required>
+            <option value="yes" {% if process.extendable_feeder_tuble_s == "yes" %}selected{% endif %}>Yes</option>
+            <option value="no" {% if process.extendable_feeder_tuble_s == "no" %}selected{% endif %}>No</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Loading Holding Jaws (s)</label>
+          <select name="loading_holding_jaws_s" required>
+            <option value="standard" {% if process.loading_holding_jaws_s == "standard" %}selected{% endif %}>Standard</option>
+            <option value="heavy" {% if process.loading_holding_jaws_s == "heavy" %}selected{% endif %}>Heavy</option>
+            <option value="medium" {% if process.loading_holding_jaws_s == "medium" %}selected{% endif %}>Medium</option>
+            <option value="light" {% if process.loading_holding_jaws_s == "light" %}selected{% endif %}>Light</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Contact Monitoring (s)</label>
+          <select name="catact_monitoring_s" required>
+            <option value="enabled" {% if process.catact_monitoring_s == "enabled" %}selected{% endif %}>Enabled</option>
+            <option value="disabled" {% if process.catact_monitoring_s == "disabled" %}selected{% endif %}>Disabled</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Wayback (d)</label>
+          <input name="wayback_d" type="text" value="{{ process.wayback_d }}" required />
+        </div>
+        <div class="form-group">
+          <label>Stripping Position</label>
+          <select name="stripping_position" required>
+            <option value="front" {% if process.stripping_position == "front" %}selected{% endif %}>Front</option>
+            <option value="rear" {% if process.stripping_position == "rear" %}selected{% endif %}>Rear</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Stripping Function</label>
+          <select name="stripping_function" required>
+            <option value="auto" {% if process.stripping_function == "auto" %}selected{% endif %}>Auto</option>
+            <option value="manual" {% if process.stripping_function == "manual" %}selected{% endif %}>Manual</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Crimping Position Monitoring</label>
+          <select name="crimping_position_monitoring" required>
+            <option value="enabled" {% if process.crimping_position_monitoring == "enabled" %}selected{% endif %}>Enabled</option>
+            <option value="disabled" {% if process.crimping_position_monitoring == "disabled" %}selected{% endif %}>Disabled</option>
+          </select>
+        </div>
+        <button type="submit">Update Process</button>
+      </form>
+      <div class="back-link">
+        <a href="{{ url_for('home') }}">← Back to Home</a>
+      </div>
+    </div>
+  </body>
+</html> 
